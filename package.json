@@ -1,22 +1,35 @@
 {
   "name": "webdevhausarbeit",
   "version": "1.0.0",
-  "description": "Hausarbeit",
-  "main": "index.js",
+  "description": "Abgabe für das Modul \"Web-Entwicklung\" im SS2017",
+  "main": "src/js/main.js",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "less": "latest",
+    "less-plugin-clean-css": "latest",
+    "browserify ": "latest",
+    "babili": "latest"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint -c ./.eslintrc.json js/**",
+    "html": "mkdir -p dist && cp src/index.html dist/",
+    "css": "mkdir -p dist/style && lessc src/style/style.less dist/style/style.css && lessc --clean-css dist/style/style.css dist/style/style.min.css && rm dist/style/style.css",
+    "js": "mkdir -p dist/js && browserify src/js/Main.js > dist/js/main.js && babili dist/js/main.js > dist/js/main.min.js && rm dist/js/main.js",
+    "build": "npm run lint && npm run html && npm run css && npm run js",
+    "clean": "rm -rf node_modules && rm -rf dist",
+    "debug": "npm install && npm run start"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marchein/webdevHausarbeit.git"
+    "url": "git+ssh://git@github.com/marchein/webdevhausarbeit.git"
   },
-  "author": "",
+  "author": "Marc Hein",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marchein/webdevHausarbeit/issues"
+    "url": "https://github.com/marchein/webdevhausarbeit/issues"
   },
-  "homepage": "https://github.com/marchein/webdevHausarbeit#readme",
-  "dependencies": {
-    "express": "^4.15.2"
-  }
+  "homepage": "https://github.com/marchein/webdevhausarbeit#readme"
 }
