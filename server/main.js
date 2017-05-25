@@ -56,11 +56,9 @@ function initData() {
 				let currentDataInJSON = fs.readFileSync(path + currentFile + ".json"); // read the current file
 				let currentData = JSON.parse(currentDataInJSON.toString()); // parse the file from json
 				bikeData.push(currentData); // push data of the file into the data array
-				//let obj = JSON.parse(data.toString());
-				//bikeData.push(obj);
-				//console.log(bikeData[i].features[0].properties.name);
 			}
 		}
+		// bikeData.sort();
 	}
 	catch (error) {
 		console.error(error);
