@@ -40,6 +40,7 @@ app.use("*", function (req, res) {
 });
 
 function fileExists(fileName) {
+	fileName++;
 	let files = fs.readdirSync(path); // get list of all files
 	if (files.includes(fileName + ".json")) {
 		return true;
