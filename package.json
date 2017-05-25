@@ -19,10 +19,11 @@
     "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css && lessc --clean-css dist/style/style.css dist/style/style.min.css",
     "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js && babili dist/js/main.js > dist/js/main.min.js",
     "img": "mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "build": "npm run lint && npm run html && npm run css && npm run js",
+    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img",
     "clean": "rm -rf node_modules && rm -rf dist",
     "debug": "npm install && npm run start",
-    "start": "node server/main.js"
+    "start": "node server/main.js",
+    "installandstart": "npm rund clean && npm install && node run build && node run start"
   },
   "repository": {
     "type": "git",
