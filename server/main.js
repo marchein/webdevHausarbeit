@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-let expressPort = 8080;
+let expressPort = process.argv[2];
 const fs = require("fs");
 let bikeData = [];
 let path = "server/data/"; // set path where data files are stored

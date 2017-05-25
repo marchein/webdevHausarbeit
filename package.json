@@ -23,7 +23,7 @@
     "build": "npm run lint && npm run html && npm run css && npm run js && npm run img",
     "clean": "rm -rf node_modules && rm -rf dist",
     "debug": "npm install && npm run start",
-    "start": "node server/main.js",
+    "start": "node server/main.js 8080",
     "installandstart": "npm run clean && npm install && node run build && node run start"
   },
   "repository": {
