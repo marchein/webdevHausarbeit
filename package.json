@@ -24,7 +24,7 @@
     "clean": "rm -rf node_modules && rm -rf dist",
     "debug": "npm install && npm run start",
     "start": "node server/main.js",
-    "installandstart": "npm rund clean && npm install && node run build && node run start"
+    "installandstart": "npm run clean && npm install && node run build && node run start"
   },
   "repository": {
     "type": "git",

@@ -1,19 +1,19 @@
 # webdevHausarbeit
 
-## Von Konstantin Twardzik & Marc Hein
+Von Konstantin Twardzik & Marc Hein
 
-###Installation
+##Installation
 ```
 git clone https://github.com/marchein/webdevHausarbeit.git
 cd webdevHausarbeit
 npm run installandstart
 ```
-###Build only
+##Build only
 ```
 npm run build
 ```
 
-###API usage
+##API usage
 ```
 / - help page
 /tracks - get all tracks in json format
