@@ -4,7 +4,8 @@
   "description": "Abgabe für das Modul \"Web-Entwicklung\" im SS2017",
   "main": "src/js/main.js",
   "dependencies": {
-    "express": "latest"
+    "express": "latest",
+    "leaflet": "latest"
   },
   "devDependencies": {
     "eslint": "latest",
