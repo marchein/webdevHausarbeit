@@ -44,7 +44,7 @@ function addTracksToList(name, id) {
 	trackButton.innerHTML = name; // set name
 	trackButton.className = "trackButton"; // set class
 	trackButton.id = id; // set id to it's own id (this is == the id in the api)
-	trackArea.appendChild(trackButton); // add to the list 
+	trackArea.appendChild(trackButton); // add to the list
 	trackButton.addEventListener("click", loadSelectedTrack, false); // on click load infomation of the track
 }
 
@@ -56,4 +56,13 @@ function loadSelectedTrack(event) {
 function highlightSelectedTrack() {
 	let selectedTrack = JSON.parse(this.responseText); // get answer from api
 	console.log(selectedTrack.features[0].properties.name); // output the name of the response
+
+	var style = {
+		color: "#ff0000",
+		weight: 5
+	};
+
+	map.geoJSON(selectedTrack, {
+		style: style
+	}).addTo(mapView);
 }
