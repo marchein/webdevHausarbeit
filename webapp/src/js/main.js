@@ -78,5 +78,6 @@ function highlightSelectedTrack() {
 		style: style
 	});
 
+	mapView.fitBounds(mapLayer.getBounds());
 	mapLayer.addTo(mapView);
 }
