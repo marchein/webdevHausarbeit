@@ -50,6 +50,13 @@ function addTracksToList(name, id) {
 }
 
 function loadSelectedTrack(event) {
+	var elements = document.querySelectorAll(".trackButton.active");
+
+	[].forEach.call(elements, function (element) {
+		element.classList.remove("active");
+	});
+
+	event.target.className += " active";
 	let id = event.target.id; // get id from <span id="THIS IS THIS ID">
 	functions.loadFile("http://localhost:8080/api/track/" + id, highlightSelectedTrack); // load from the api
 }
