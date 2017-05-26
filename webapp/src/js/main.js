@@ -18,8 +18,9 @@ let controls = document.createElement("div"); // create control section
 controls.id = "controls";
 trackArea.appendChild(controls);
 
-// todo - add div for the tracks
-
+let tracks = document.createElement("div"); // create control section
+tracks.id = "tracks";
+trackArea.appendChild(tracks);
 
 var mapView = map.map("mapArea").setView([49.749992, 6.6371433], 13); // set map to trier and current zoom = 13
 
@@ -44,7 +45,7 @@ function addTracksToList(name, id) {
 	trackButton.innerHTML = name; // set name
 	trackButton.className = "trackButton"; // set class
 	trackButton.id = id; // set id to it's own id (this is == the id in the api)
-	trackArea.appendChild(trackButton); // add to the list
+	tracks.appendChild(trackButton); // add to the list
 	trackButton.addEventListener("click", loadSelectedTrack, false); // on click load infomation of the track
 }
 
@@ -53,16 +54,22 @@ function loadSelectedTrack(event) {
 	functions.loadFile("http://localhost:8080/api/track/" + id, highlightSelectedTrack); // load from the api
 }
 
+let mapLayer;
+
 function highlightSelectedTrack() {
+	if (mapLayer !== undefined) {
+		mapView.removeLayer(mapLayer);
+	}
 	let selectedTrack = JSON.parse(this.responseText); // get answer from api
 	console.log(selectedTrack.features[0].properties.name); // output the name of the response
-
 	var style = {
 		color: "#ff0000",
 		weight: 5
 	};
 
-	map.geoJSON(selectedTrack, {
+	mapLayer = map.geoJSON(selectedTrack, {
 		style: style
-	}).addTo(mapView);
+	});
+
+	mapLayer.addTo(mapView);
 }
