@@ -2,21 +2,24 @@
 
 Von Konstantin Twardzik & Marc Hein
 
-##Installation
+#Installation
 ```
 git clone https://github.com/marchein/webdevHausarbeit.git
 cd webdevHausarbeit
 npm run installandstart
 ```
-##Build only
+#Build only
 ```
 npm run build
 ```
 
-##API usage
+#API usage
 ```
 / - help page
 /tracks - get all tracks in json format
 /track/:id - get the track with the id of :id
 
 ```
+
+#Usage
+After building and starting the page is available at http://localhost:8080/

@@ -5,6 +5,8 @@ document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https:
 
 let allTracks = []; // datastructure for the trackdata
 
+let serverPath = document.URL;
+
 let content = document.getElementById("content"); // find content container
 let mapArea = document.createElement("div"); //create map area
 mapArea.id = "mapArea";
@@ -31,7 +33,7 @@ map.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token
 	accessToken: "pk.eyJ1IjoibWFyY2hlaW4iLCJhIjoiY2ozNHF6bm9tMDAyajJ3cDdjYWQ5N3QydCJ9.I5KDSfeFcn6e2oUJi6k2fg"
 }).addTo(mapView);
 
-functions.loadFile("http://localhost:8080/api/alltracks", init); // load all tracks and call init()
+functions.loadFile(serverPath + "api/alltracks", init); // load all tracks and call init()
 
 function init() {
 	allTracks = JSON.parse(this.responseText); // parse response
@@ -58,7 +60,7 @@ function loadSelectedTrack(event) {
 
 	event.target.className += " active";
 	let id = event.target.id; // get id from <span id="THIS IS THIS ID">
-	functions.loadFile("http://localhost:8080/api/track/" + id, highlightSelectedTrack); // load from the api
+	functions.loadFile(serverPath + "api/track/" + id, highlightSelectedTrack); // load from the api
 }
 
 let mapLayer;
