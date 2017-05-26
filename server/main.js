@@ -59,6 +59,9 @@ function initData() {
 				bikeData.push(currentData); // push data of the file into the data array
 			}
 		}
+		bikeData.sort(function (a, b) {
+			return a.features[0].properties.name.localeCompare(b.features[0].properties.name);
+		});
 		// bikeData.sort();
 	}
 	catch (error) {
