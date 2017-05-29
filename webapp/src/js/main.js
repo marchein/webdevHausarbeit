@@ -8,7 +8,9 @@ let allTracks = []; // datastructure for the trackdata
 let serverPath = document.URL;
 
 let content = document.getElementById("content"); // find content container
+
 let profileCanvas;
+let profileContainer;
 
 let mapArea = document.createElement("div"); //create map area
 mapArea.id = "mapArea";
@@ -137,39 +139,32 @@ function drawHeight(coordinates) {
 	let height = document.getElementById("profileCanvas").clientHeight;
 	let width = document.getElementById("profileCanvas").clientWidth;
 
-	console.log(diff);
+	ctx.moveTo(0, 0);
 
 	for (let i = 0; i < heightPoints.length; i++) {
-		if (i === 0) {
-			ctx.moveTo(0, 0);
-		}
-		else {
-			ctx.lineTo((i / heightPoints.length) * width / 2, ((heightPoints[i] - min) / diff) * (height-100));
-		}
+		ctx.lineTo((i / heightPoints.length) * width, ((heightPoints[i] - min) / diff) * height);
 	}
-	ctx.moveTo(350, 0);
+
+	ctx.lineTo(350, 0);
 	ctx.closePath();
 	ctx.fillStyle = "white";
-	//ctx.fill();
+	ctx.fill();
 	ctx.lineWidth = 1;
-	ctx.stroke();
-
-	// max height 714.3
-	// min height 65.5
-}
-
-function drawLine(ctx, startX, startY, endX, endY) {
-	ctx.moveTo(startX, startY);
-	ctx.lineTo(endX, endY);
-	ctx.lineWidth = 5;
-	ctx.stroke();
 }
 
 function addCanvas() {
 	if (profileCanvas !== undefined) {
-		mapArea.removeChild(profileCanvas);
+		profileContainer.removeChild(profileCanvas);
 	}
+	if (profileContainer !== undefined) {
+		mapArea.removeChild(profileContainer);
+	}
+
+	profileContainer = document.createElement("div");
+	profileContainer.id = "profileContainer";
+	mapArea.appendChild(profileContainer);
+
 	profileCanvas = document.createElement("canvas"); //create map area
 	profileCanvas.id = "profileCanvas";
-	mapArea.appendChild(profileCanvas);
+	profileContainer.appendChild(profileCanvas);
 }
