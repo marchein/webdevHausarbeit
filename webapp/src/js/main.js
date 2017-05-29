@@ -45,10 +45,16 @@ functions.loadFile(serverPath + "api/tracks", init); // load all tracks and call
 
 function init() {
 	allTracks = JSON.parse(this.responseText); // parse response
-	for (let i = 0; i < allTracks.length; i++) {
+	/*for (let i = 0; i < allTracks.length; i++) {
 		addTracksToList(allTracks[i].features[0].properties.name, i); // add every track to the list
-	}
+	}*/
+
+	window.addEventListener("resize", setControls);
 	addControls();
+	let left = document.getElementById("leftArrow");
+	let right = document.getElementById("rightArrow");
+	left.addEventListener("click", backPage, true);
+	right.addEventListener("click", nextPage, true);
 }
 
 function addTracksToList(name, id) {
@@ -77,12 +83,14 @@ function backPage() {
 	if (currentPage !== 1) {
 		currentPage--;
 	}
+	setControls();
 }
 
 function nextPage() {
 	if (currentPage !== totalPages) {
 		currentPage++;
 	}
+	setControls();
 }
 
 function addControls() {
@@ -92,14 +100,13 @@ function addControls() {
 
 	let leftArrow = document.createElement("i");
 	leftArrow.classList.add("fa", "fa-chevron-left");
-	leftArrow.addEventListener("click", backPage, false);
+	leftArrow.id = "leftArrow";
 	arrowBox.appendChild(leftArrow);
-	backPage();
 	arrowBox.innerHTML += "&nbsp;&nbsp;";
 
 	let rightArrow = document.createElement("i");
 	rightArrow.classList.add("fa", "fa-chevron-right");
-	rightArrow.addEventListener("click", nextPage, false);
+	rightArrow.id = "rightArrow";
 	arrowBox.appendChild(rightArrow);
 
 	let pages = document.createElement("div");
@@ -108,6 +115,8 @@ function addControls() {
 	controls.appendChild(pages);
 	setControls();
 }
+
+let lastItems = 0;
 
 function setControls() {
 	while (tracks.firstChild) {
@@ -124,25 +133,25 @@ function setControls() {
 
 	let currentTracks = [];
 
-	let counter = 0;
-
-	if (currentPage !== 1) {
-		counter = trackItemCount;
-	}
-
 	let nextItems = trackItemCount * currentPage;
+	console.log(lastItems);
+	console.log(nextItems);
 
-	for (counter; counter < nextItems; counter++) {
+	for (let i = lastItems; i < nextItems; i++) {
 		let currentItem = {
-			track: allTracks[counter],
-			id: counter
+			track: allTracks[i],
+			id: i
 		};
 		currentTracks.push(currentItem);
 	}
 
 	for (let i = 0; i < currentTracks.length; i++) {
-		addTracksToList(currentTracks[i].track.features[0].properties.name, currentTracks[i].id);
+		if (currentTracks[i].track !== undefined) {
+			addTracksToList(currentTracks[i].track.features[0].properties.name, currentTracks[i].id);
+		}
 	}
+
+	lastItems = nextItems;
 }
 
 let mapLayer;
@@ -248,5 +257,3 @@ function addCanvas() {
 	profileCanvas.height = 300;
 	profileContainer.appendChild(profileCanvas);
 }
-
-window.addEventListener("resize", setControls);
