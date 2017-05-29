@@ -10,11 +10,25 @@
 	min-width: 900px;
 }
 
-#mapArea {
+#mapContainer {
 	height: 100vh;
-	width: 70%;
+	width: ~"calc(70% - 1px)";
+	float: left;
+	border-right: 1px solid #333333;
+}
+
+#mapArea {
+	height: 80vh;
+	width: 100%;
 	background-color: grey;
 	float: left;
+	border-bottom: 1px solid #333333;
+}
+
+#heightContainer {
+	height: 20vh;
+	width: 100%;
+	float:left;
 }
 
 #trackArea {
@@ -29,15 +43,15 @@
 }
 
 span.trackButton {
-	font-size: 0.9em;
 	width: 100%;
-	height: 15px;
+	height: 40px;
 	float: left;
 	clear: left;
 	padding: 10px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	box-sizing: border-box;
 }
 
 span.trackButton:nth-child(even) {
@@ -56,4 +70,5 @@ span.trackButton.active {
 #tracks {
 	width: 100%;
 	height: ~"calc(100% - 50px)";
+	overflow: hidden;
 }

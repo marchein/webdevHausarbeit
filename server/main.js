@@ -13,19 +13,19 @@ app.use("/api", router);
 
 router.get("/", function (req, res) {
 	let version = "<h1>Bike API v0.0.1</h1>\nWritten by Konstantin Twardzik & Marc Hein";
-	let usage = "\n\n<h2>Usage:</h2>\n<ul>\n\t<li>/ - this help page</li>\n\t<li>/tracks - get all tracks in json format</li>\n\t<li>/track/:id - get the track with the id of :id</li>\n</ul>";
+	let usage = "\n\n<h2>Usage:</h2>\n<ul>\n\t<li>/ - this help page</li>\n\t<li>/tracks - get all tracks in json format</li>\n\t<li>/tracks/:id - get the track with the id of :id</li>\n</ul>";
 	res.send(version + usage);
 });
 
-router.get("/alltracks", function (req, res) {
+router.get("/tracks", function (req, res) {
 	var json = JSON.stringify(bikeData);
 	res.send(json);
 });
 
-router.get("/track/:id", function (req, res) {
+router.get("/tracks/:id", function (req, res) {
 	let id = req.params.id;
 	let message;
-	if (fileExists(id)) {
+	if (bikeData[id] !== undefined) {
 		message = JSON.stringify(bikeData[id]);
 	}
 	else {
@@ -36,23 +36,19 @@ router.get("/track/:id", function (req, res) {
 
 // Handle 404 error.
 app.use("*", function (req, res) {
-	res.status(404).send("404"); // not found error
+	res.status(404).send("<h1>Error 404 - not found"); // not found error
 });
 
 function fileExists(fileName) {
-	fileName++;
 	let files = fs.readdirSync(path); // get list of all files
-	if (files.includes(fileName + ".json")) {
-		return true;
-	}
-	return false;
+	return files.includes(fileName + ".json");
 }
 
 function initData() {
 	try {
 		let files = fs.readdirSync(path); // get list of all files
-		for (let i = 1; i < files.length; i++) {
-			let currentFile = i; // current file name
+		for (let i = 0; i <= files.length; i++) {
+			let currentFile = (i + 1); 	// current file name
 			if (fileExists(currentFile)) { // check if the current file exists in the data set
 				let currentDataInJSON = fs.readFileSync(path + currentFile + ".json"); // read the current file
 				let currentData = JSON.parse(currentDataInJSON.toString()); // parse the file from json
@@ -62,7 +58,6 @@ function initData() {
 		bikeData.sort(function (a, b) {
 			return a.features[0].properties.name.localeCompare(b.features[0].properties.name);
 		});
-		// bikeData.sort();
 	}
 	catch (error) {
 		console.error(error);

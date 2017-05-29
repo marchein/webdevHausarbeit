@@ -17,10 +17,10 @@
   "scripts": {
     "lint": "eslint -c ./.eslintrc.json js/**",
     "html": "mkdir -p dist && cp webapp/src/index.html dist/",
-    "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css && lessc --clean-css dist/style/style.css dist/style/style.min.css",
-    "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js && babili dist/js/main.js > dist/js/main.min.js",
+    "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
+    "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
     "img": "mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img",
+    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img && && babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
     "clean": "rm -rf node_modules && rm -rf dist",
     "debug": "npm install && npm run start",
     "start": "node server/main.js 8080",
