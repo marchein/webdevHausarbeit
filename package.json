@@ -15,7 +15,7 @@
     "babili": "latest"
   },
   "scripts": {
-    "lint": "eslint -c ./.eslintrc.json js/**",
+    "lint": "eslint -c ./.eslintrc.json webapp/src/js/**",
     "html": "mkdir -p dist && cp webapp/src/index.html dist/",
     "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
     "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",

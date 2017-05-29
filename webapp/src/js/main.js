@@ -8,17 +8,11 @@ let allTracks = []; // datastructure for the trackdata
 let serverPath = document.URL;
 
 let content = document.getElementById("content"); // find content container
-let mapContainer = document.createElement("div"); //create map area
-mapContainer.id = "mapContainer";
-content.appendChild(mapContainer);
+let profileCanvas;
 
 let mapArea = document.createElement("div"); //create map area
 mapArea.id = "mapArea";
-mapContainer.appendChild(mapArea);
-
-let heightArea = document.createElement("div"); //create map area
-heightArea.id = "heightArea";
-mapContainer.appendChild(heightArea);
+content.appendChild(mapArea);
 
 let trackArea = document.createElement("div"); // create right pane
 trackArea.id = "trackArea";
@@ -48,7 +42,6 @@ function init() {
 	for (let i = 0; i < allTracks.length; i++) {
 		addTracksToList(allTracks[i].features[0].properties.name, i); // add every track to the list
 	}
-	initCanvas();
 }
 
 function addTracksToList(name, id) {
@@ -125,27 +118,42 @@ function addMarkers(coordinates) {
 	}
 }
 
-function addCanvas() {
-	let heightCanvas = document.createElement("canvas"); //create map area
-	heightCanvas.id = "heightCanvas";
-	heightArea.appendChild(heightCanvas);
-
-	let trackInfos = document.createElement("div"); //create map area
-	trackInfos.id = "trackInfos";
-	heightArea.appendChild(trackInfos);
-}
-
 function drawHeight(coordinates) {
-	let canvas = document.getElementById("heightCanvas");
-
 	let heightPoints = [];
-
+	var ctx = profileCanvas.getContext("2d");
+	let height = 150;
+	let width = 350;
+	ctx.scale(1, -1);
+	let bottomLeft = profileCanvas.clientHeight;
+	let lastCoordinate = 0;
 	for (let i = 0; i < coordinates.length; i++) {
-		console.log(coordinates[i][2]);
 		heightPoints.push(coordinates[i][2]);
+		if (i !== 0) {
+			drawLine(ctx, i / width, heightPoints[i - 1] / height, i / width, heightPoints[i] / height);
+		} 
+		else {
+			drawLine(ctx, i / width, 0, i / width, heightPoints[i] / height);
+		}
 	}
+
+	// max height 714.3
+	// min height 65.5
 }
 
-function initCanvas() {
-	heightArea.innerHTML = "Bitte Track auswählen";
+function drawLine(ctx, startX, startY, endX, endY) {
+	ctx.beginPath();
+	ctx.strokeStyle = "#ffffff";
+	ctx.moveTo(startX, startY);
+	ctx.lineTo(endX, endY);
+	ctx.lineWidth = 5;
+	ctx.stroke();
+}
+
+function addCanvas() {
+	if (profileCanvas !== undefined) {
+		mapArea.removeChild(profileCanvas);
+	}
+	profileCanvas = document.createElement("canvas"); //create map area
+	profileCanvas.id = "profileCanvas";
+	mapArea.appendChild(profileCanvas);
 }
