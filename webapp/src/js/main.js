@@ -121,28 +121,44 @@ function addMarkers(coordinates) {
 function drawHeight(coordinates) {
 	let heightPoints = [];
 	var ctx = profileCanvas.getContext("2d");
-	let height = 150;
-	let width = 350;
-	ctx.scale(1, -1);
-	let bottomLeft = profileCanvas.clientHeight;
-	let lastCoordinate = 0;
+	ctx.transform(1, 0, 0, -1, 0, profileCanvas.height);
+
 	for (let i = 0; i < coordinates.length; i++) {
 		heightPoints.push(coordinates[i][2]);
-		if (i !== 0) {
-			drawLine(ctx, i / width, heightPoints[i - 1] / height, i / width, heightPoints[i] / height);
-		} 
+	}
+
+	ctx.beginPath();
+	ctx.strokeStyle = "#ffffff";
+
+	let min = Math.min.apply(Math, heightPoints);
+	let max = Math.max.apply(Math, heightPoints);
+	let diff = max - min;
+
+	let height = document.getElementById("profileCanvas").clientHeight;
+	let width = document.getElementById("profileCanvas").clientWidth;
+
+	console.log(diff);
+
+	for (let i = 0; i < heightPoints.length; i++) {
+		if (i === 0) {
+			ctx.moveTo(0, 0);
+		}
 		else {
-			drawLine(ctx, i / width, 0, i / width, heightPoints[i] / height);
+			ctx.lineTo((i / heightPoints.length) * width / 2, ((heightPoints[i] - min) / diff) * (height-100));
 		}
 	}
+	ctx.moveTo(350, 0);
+	ctx.closePath();
+	ctx.fillStyle = "white";
+	//ctx.fill();
+	ctx.lineWidth = 1;
+	ctx.stroke();
 
 	// max height 714.3
 	// min height 65.5
 }
 
 function drawLine(ctx, startX, startY, endX, endY) {
-	ctx.beginPath();
-	ctx.strokeStyle = "#ffffff";
 	ctx.moveTo(startX, startY);
 	ctx.lineTo(endX, endY);
 	ctx.lineWidth = 5;
