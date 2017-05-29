@@ -1,7 +1,8 @@
 var map = require("leaflet"); // add library for the map
 var functions = require("./function.js"); // add other functions
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // add css for the map
-document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>"; // add css for fonts
+document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // add css for the map
+document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>"; // add css for fonts
 
 let allTracks = []; // datastructure for the trackdata
 
@@ -11,6 +12,9 @@ let content = document.getElementById("content"); // find content container
 
 let profileCanvas;
 let profileContainer;
+
+let currentPage = 1;
+let totalPages = 1;
 
 let mapArea = document.createElement("div"); //create map area
 mapArea.id = "mapArea";
@@ -44,6 +48,7 @@ function init() {
 	for (let i = 0; i < allTracks.length; i++) {
 		addTracksToList(allTracks[i].features[0].properties.name, i); // add every track to the list
 	}
+	addControls();
 }
 
 function addTracksToList(name, id) {
@@ -66,6 +71,78 @@ function loadSelectedTrack(event) {
 	let id = event.target.id; // get id from <span id="THIS IS THIS ID">
 	highlightSelectedTrack(id);
 	//functions.loadFile(serverPath + "api/tracks/" + id, highlightSelectedTrack); // load from the api
+}
+
+function backPage() {
+	if (currentPage !== 1) {
+		currentPage--;
+	}
+}
+
+function nextPage() {
+	if (currentPage !== totalPages) {
+		currentPage++;
+	}
+}
+
+function addControls() {
+	let arrowBox = document.createElement("div");
+	arrowBox.id = "arrowBox";
+	controls.appendChild(arrowBox);
+
+	let leftArrow = document.createElement("i");
+	leftArrow.classList.add("fa", "fa-chevron-left");
+	leftArrow.addEventListener("click", backPage, false);
+	arrowBox.appendChild(leftArrow);
+	backPage();
+	arrowBox.innerHTML += "&nbsp;&nbsp;";
+
+	let rightArrow = document.createElement("i");
+	rightArrow.classList.add("fa", "fa-chevron-right");
+	rightArrow.addEventListener("click", nextPage, false);
+	arrowBox.appendChild(rightArrow);
+
+	let pages = document.createElement("div");
+	pages.id = "pages";
+	pages.innerHTML = currentPage + "/" + totalPages;
+	controls.appendChild(pages);
+	setControls();
+}
+
+function setControls() {
+	while (tracks.firstChild) {
+		tracks.removeChild(tracks.firstChild);
+	}
+	let tracksHeight = mapArea.clientHeight;
+	let controlsHeight = controls.clientHeight; // 50px
+	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
+	let trackItemCount = Math.floor(trackBoxHeight / 40); // wie viele tracks bei aktueller auflösung reinpassen
+
+	totalPages = Math.ceil(allTracks.length / trackItemCount); // max pages
+	let pages = document.getElementById("pages");
+	pages.innerHTML = currentPage + "/" + totalPages;
+
+	let currentTracks = [];
+
+	let counter = 0;
+
+	if (currentPage !== 1) {
+		counter = trackItemCount;
+	}
+
+	let nextItems = trackItemCount * currentPage;
+
+	for (counter; counter < nextItems; counter++) {
+		let currentItem = {
+			track: allTracks[counter],
+			id: counter
+		};
+		currentTracks.push(currentItem);
+	}
+
+	for (let i = 0; i < currentTracks.length; i++) {
+		addTracksToList(currentTracks[i].track.features[0].properties.name, currentTracks[i].id);
+	}
 }
 
 let mapLayer;
@@ -130,26 +207,27 @@ function drawHeight(coordinates) {
 	}
 
 	ctx.beginPath();
-	ctx.strokeStyle = "#ffffff";
+	ctx.lineWidth = 1;
+	ctx.fillStyle = "white";
+	ctx.strokeStyle = "white";
 
 	let min = Math.min.apply(Math, heightPoints);
 	let max = Math.max.apply(Math, heightPoints);
 	let diff = max - min;
 
-	let height = document.getElementById("profileCanvas").clientHeight;
-	let width = document.getElementById("profileCanvas").clientWidth;
+	let height = document.getElementById("profileCanvas").height;
+	let width = document.getElementById("profileCanvas").width;
+	console.log(width);
 
 	ctx.moveTo(0, 0);
 
 	for (let i = 0; i < heightPoints.length; i++) {
-		ctx.lineTo((i / heightPoints.length) * width, ((heightPoints[i] - min) / diff) * height);
+		ctx.lineTo(((i / heightPoints.length) * width), ((heightPoints[i] - min) / diff) * height);
 	}
 
-	ctx.lineTo(350, 0);
+	ctx.lineTo(width, 0);
 	ctx.closePath();
-	ctx.fillStyle = "white";
 	ctx.fill();
-	ctx.lineWidth = 1;
 }
 
 function addCanvas() {
@@ -166,5 +244,9 @@ function addCanvas() {
 
 	profileCanvas = document.createElement("canvas"); //create map area
 	profileCanvas.id = "profileCanvas";
+	profileCanvas.width = 700;
+	profileCanvas.height = 300;
 	profileContainer.appendChild(profileCanvas);
 }
+
+window.addEventListener("resize", setControls);
