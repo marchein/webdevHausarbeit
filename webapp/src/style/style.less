@@ -45,6 +45,7 @@
 	width: 30%;
 	background-color: #21b2a5;
 	float: right;
+	overflow: hidden;
 }
 
 #controls {
@@ -96,4 +97,10 @@ span.trackButton.active {
 #tracks {
 	width: 100%;
 	height: ~"calc(100% - 50px)";
+	max-height: ~"calc(100% - 50px)";
+	overflow: hidden;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
 }

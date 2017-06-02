@@ -185,16 +185,19 @@ function addTracksToList(name, id) {
 }
 
 function backPage() {
-	if (currentPage !== 1) {
+	if (currentPage > 1) {
 		currentPage--;
 	}
 	setCurrentPage();
 }
 
 function nextPage() {
-	if (currentPage !== totalPages) {
+	if (currentPage < totalPages) {
 		currentPage++;
 	}
+	console.log('------------------------------------');
+	console.log(currentPage);
+	console.log('------------------------------------');
 	setCurrentPage();
 }
 
@@ -245,7 +248,9 @@ function setCurrentPage() {
 	let tracksHeight = mapArea.clientHeight;
 	let controlsHeight = controls.clientHeight; // 50px
 	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
-	maxItemsOnCurrentPage = (Math.floor(trackBoxHeight / 40)) - 1; // wie viele tracks bei aktueller auflösung reinpassen
+
+	maxItemsOnCurrentPage = (Math.floor(trackBoxHeight / 40)); // wie viele tracks bei aktueller auflösung reinpassen
+
 	if (currentPage === 1) {
 		currentFirstItem = 0;
 	}
@@ -253,8 +258,10 @@ function setCurrentPage() {
 		currentFirstItem = (currentPage - 1) * maxItemsOnCurrentPage;
 	}
 
-	for (let i = currentFirstItem; i <= (currentFirstItem + maxItemsOnCurrentPage); i++) {
-		addTracksToList(getTrackName(allTracks[i]), i);
+	for (let i = currentFirstItem; i < (currentFirstItem + maxItemsOnCurrentPage); i++) {
+		if (allTracks[i] !== undefined) {
+			addTracksToList(getTrackName(allTracks[i]), i);
+		}
 	}
 
 	setControls();
