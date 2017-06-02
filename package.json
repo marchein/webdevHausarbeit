@@ -15,16 +15,16 @@
     "babili": "latest"
   },
   "scripts": {
-    "lint": "eslint -c ./.eslintrc.json webapp/src/js/**",
+    "lint": "eslint -c ./.eslintrc.json webapp/src/js/** && eslint -c ./.eslintrc.json server/**",
     "html": "mkdir -p dist && cp webapp/src/index.html dist/",
     "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
     "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
     "img": "mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img && babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
+    "minify": "babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
     "clean": "rm -rf node_modules && rm -rf dist",
-    "debug": "npm install && npm run start",
-    "start": "node server/main.js 8080",
-    "installandstart": "npm run clean && npm install && node run build && node run start"
+    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
+    "debug": "npm run lint && npm run html && npm run css && npm run js && npm run img",
+    "start": "node server/main.js 8080"
   },
   "repository": {
     "type": "git",
