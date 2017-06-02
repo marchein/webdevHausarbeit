@@ -34,7 +34,11 @@ let tracks = document.createElement("div"); // create control section
 tracks.id = "tracks";
 trackArea.appendChild(tracks);
 
-let mapView = map.map("mapArea").setView([49.749992, 6.6371433], 13); // set map to trier and current zoom = 13
+let mapView = map.map("mapArea"); // set map to trier and current zoom = 13
+
+function initMapView() {
+	mapView.setView([49.749992, 6.6371433], 13);
+}
 
 map.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -56,6 +60,7 @@ function init() {
 	left.addEventListener("click", backPage, true);
 	right.addEventListener("click", nextPage, true);
 	setCurrentPage();
+	initMapView();
 }
 
 functions.loadFile(serverPath + "api/tracks", init); // load all tracks and call init()
@@ -165,9 +170,9 @@ function highlightSelectedTrack(id) {
 function loadSelectedTrack(event) {
 	var elements = document.querySelectorAll(".trackButton.active");
 
-	[].forEach.call(elements, function (element) {
-		element.classList.remove("active");
-	});
+	for (let i = 0; i < elements.length; i++) {
+		elements[i].classList.remove("active");
+	}
 
 	event.target.className += " active";
 	let id = event.target.id; // get id from <span id="THIS IS THIS ID">
@@ -185,20 +190,28 @@ function addTracksToList(name, id) {
 }
 
 function backPage() {
+	removeInactive();
 	if (currentPage > 1) {
 		currentPage--;
 	}
-	setCurrentPage();
+
+	setControls();
 }
 
 function nextPage() {
+	removeInactive();
 	if (currentPage < totalPages) {
 		currentPage++;
 	}
-	console.log('------------------------------------');
-	console.log(currentPage);
-	console.log('------------------------------------');
-	setCurrentPage();
+
+	setControls();
+}
+
+function removeInactive() {
+	let left = document.getElementById("leftArrow");
+	left.classList.remove("inactive");
+	let right = document.getElementById("rightArrow");
+	right.classList.remove("inactive");
 }
 
 function addControls() {
@@ -226,6 +239,9 @@ function addControls() {
 
 function windowResize() {
 	currentPage = 1;
+	initMapView();
+	setControls();
+	removeInactive();
 	setCurrentPage();
 }
 
@@ -239,12 +255,24 @@ function setControls() {
 
 	let pages = document.getElementById("pages");
 	pages.innerHTML = currentPage + "/" + totalPages;
+	setCurrentPage();
 }
 
 function setCurrentPage() {
 	while (tracks.firstChild) {
 		tracks.removeChild(tracks.firstChild);
 	}
+
+	if (currentPage === 1) {
+		let left = document.getElementById("leftArrow");
+		left.className += " inactive";
+	}
+
+	if (currentPage === totalPages) {
+		let right = document.getElementById("rightArrow");
+		right.className += " inactive";
+	}
+
 	let tracksHeight = mapArea.clientHeight;
 	let controlsHeight = controls.clientHeight; // 50px
 	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
@@ -263,10 +291,6 @@ function setCurrentPage() {
 			addTracksToList(getTrackName(allTracks[i]), i);
 		}
 	}
-
-	setControls();
-
-	console.log(tracks.childNodes);
 }
 
 function getTrackName(track) {
