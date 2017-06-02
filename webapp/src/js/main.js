@@ -37,7 +37,8 @@ trackArea.appendChild(tracks);
 let mapView = map.map("mapArea"); // set map to trier and current zoom = 13
 
 function initMapView() {
-	mapView.setView([49.749992, 6.6371433], 13);
+	clearMapLayer();
+	mapView.setView([49.749992, 6.637143299999934], 13);
 }
 
 map.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -66,6 +67,12 @@ function init() {
 functions.loadFile(serverPath + "api/tracks", init); // load all tracks and call init()
 
 let mapLayer;
+
+function clearMapLayer() {
+	if (mapLayer !== undefined) {
+		mapView.removeLayer(mapLayer);
+	}
+}
 
 function addMarkers(coordinates) {
 	if (mapLayer !== undefined) {
@@ -143,9 +150,7 @@ function drawHeight(coordinates) {
 }
 
 function highlightSelectedTrack(id) {
-	if (mapLayer !== undefined) {
-		mapView.removeLayer(mapLayer);
-	}
+	clearMapLayer();
 	addCanvas();
 	//let selectedTrack = JSON.parse(this.responseText); // get answer from api
 	let selectedTrack = allTracks[id];
