@@ -1,6 +1,5 @@
-var map = require("leaflet"); // add library for the map
-var functions = require("./function.js"); // add other functions
-document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // add css for the map
+let map = require("leaflet"); // add library for the map
+let functions = require("./function.js"); // add other functions
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // add css for the map
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>"; // add css for fonts
 
@@ -8,13 +7,16 @@ let allTracks = []; // datastructure for the trackdata
 
 let serverPath = document.URL;
 
-let content = document.getElementById("content"); // find content container
-
 let profileCanvas;
 let profileContainer;
 
+let maxItemsOnCurrentPage;
+
+let currentFirstItem = 0;
 let currentPage = 1;
 let totalPages = 1;
+
+let content = document.getElementById("content"); // find content container
 
 let mapArea = document.createElement("div"); //create map area
 mapArea.id = "mapArea";
@@ -32,10 +34,10 @@ let tracks = document.createElement("div"); // create control section
 tracks.id = "tracks";
 trackArea.appendChild(tracks);
 
-var mapView = map.map("mapArea").setView([49.749992, 6.6371433], 13); // set map to trier and current zoom = 13
+let mapView = map.map("mapArea").setView([49.749992, 6.6371433], 13); // set map to trier and current zoom = 13
 
 map.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
 	maxZoom: 18,
 	id: "mapbox.streets",
 	accessToken: "pk.eyJ1IjoibWFyY2hlaW4iLCJhIjoiY2ozNHF6bm9tMDAyajJ3cDdjYWQ5N3QydCJ9.I5KDSfeFcn6e2oUJi6k2fg"
@@ -47,12 +49,13 @@ function init() {
 		addTracksToList(allTracks[i].features[0].properties.name, i); // add every track to the list
 	}*/
 
-	window.addEventListener("resize", setControls);
+	window.addEventListener("resize", windowResize);
 	addControls();
 	let left = document.getElementById("leftArrow");
 	let right = document.getElementById("rightArrow");
 	left.addEventListener("click", backPage, true);
 	right.addEventListener("click", nextPage, true);
+	setCurrentPage();
 }
 
 functions.loadFile(serverPath + "api/tracks", init); // load all tracks and call init()
@@ -104,7 +107,7 @@ function addCanvas() {
 
 function drawHeight(coordinates) {
 	let heightPoints = [];
-	var ctx = profileCanvas.getContext("2d");
+	let ctx = profileCanvas.getContext("2d");
 	ctx.transform(1, 0, 0, -1, 0, profileCanvas.height);
 
 	for (let i = 0; i < coordinates.length; i++) {
@@ -142,7 +145,7 @@ function highlightSelectedTrack(id) {
 	//let selectedTrack = JSON.parse(this.responseText); // get answer from api
 	let selectedTrack = allTracks[id];
 	// console.log(selectedTrack.features[0].geometry.coordinates); // output the name of the response
-	var style = {
+	let style = {
 		color: "#ff0000",
 		weight: 5
 	};
@@ -185,14 +188,14 @@ function backPage() {
 	if (currentPage !== 1) {
 		currentPage--;
 	}
-	setControls();
+	setCurrentPage();
 }
 
 function nextPage() {
 	if (currentPage !== totalPages) {
 		currentPage++;
 	}
-	setControls();
+	setCurrentPage();
 }
 
 function addControls() {
@@ -218,40 +221,50 @@ function addControls() {
 	setControls();
 }
 
-let lastItems = 0;
+function windowResize() {
+	currentPage = 1;
+	setCurrentPage();
+}
 
 function setControls() {
+	let tracksHeight = mapArea.clientHeight;
+	let controlsHeight = controls.clientHeight; // 50px
+	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
+	maxItemsOnCurrentPage = Math.floor(trackBoxHeight / 40); // wie viele tracks bei aktueller auflösung reinpassen
+
+	totalPages = Math.ceil(allTracks.length / maxItemsOnCurrentPage); // max pages
+
+	let pages = document.getElementById("pages");
+	pages.innerHTML = currentPage + "/" + totalPages;
+}
+
+function setCurrentPage() {
 	while (tracks.firstChild) {
 		tracks.removeChild(tracks.firstChild);
 	}
 	let tracksHeight = mapArea.clientHeight;
 	let controlsHeight = controls.clientHeight; // 50px
 	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
-	let trackItemCount = Math.floor(trackBoxHeight / 40); // wie viele tracks bei aktueller auflösung reinpassen
-
-	totalPages = Math.ceil(allTracks.length / trackItemCount); // max pages
-	let pages = document.getElementById("pages");
-	pages.innerHTML = currentPage + "/" + totalPages;
-
-	let currentTracks = [];
-
-	let nextItems = trackItemCount * currentPage;
-	console.log(lastItems);
-	console.log(nextItems);
-
-	for (let i = lastItems; i < nextItems; i++) {
-		let currentItem = {
-			track: allTracks[i],
-			id: i
-		};
-		currentTracks.push(currentItem);
+	maxItemsOnCurrentPage = (Math.floor(trackBoxHeight / 40)) - 1; // wie viele tracks bei aktueller auflösung reinpassen
+	if (currentPage === 1) {
+		currentFirstItem = 0;
+	}
+	else {
+		currentFirstItem = (currentPage - 1) * maxItemsOnCurrentPage;
 	}
 
-	for (let i = 0; i < currentTracks.length; i++) {
-		if (currentTracks[i].track !== undefined) {
-			addTracksToList(currentTracks[i].track.features[0].properties.name, currentTracks[i].id);
-		}
+	for (let i = currentFirstItem; i <= (currentFirstItem + maxItemsOnCurrentPage); i++) {
+		addTracksToList(getTrackName(allTracks[i]), i);
 	}
 
-	lastItems = nextItems;
+	setControls();
+
+	console.log(tracks.childNodes);
+}
+
+function getTrackName(track) {
+	if (track !== null) {
+		return track.features[0].properties.name;
+	}
+	return "error!";
 }
