@@ -15,16 +15,16 @@
     "babili": "latest"
   },
   "scripts": {
-    "lint": "eslint -c ./.eslintrc.json webapp/src/js/** && eslint -c ./.eslintrc.json server/**",
-    "html": "mkdir -p dist && cp webapp/src/index.html dist/",
-    "css": "mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
-    "js": "mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
-    "img": "mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "minify": "babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
-    "clean": "rm -rf node_modules && rm -rf dist",
-    "build": "npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
-    "debug": "npm run lint && npm run html && npm run css && npm run js && npm run img",
-    "start": "node server/main.js 8080"
+    "lint": "echo '=> linting' && eslint -c ./.eslintrc.json webapp/src/js/**.js && eslint -c ./.eslintrc.json server/**.js",
+    "html": "echo '=> creating static html files' && mkdir -p dist && cp webapp/src/index.html dist/",
+    "css": "echo '=> converting less to css' && mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
+    "js": "echo '=> making js files ready for browser' && mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
+    "img": "echo '=> copying the assets' && mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
+    "minify": "echo '=> minify all ressources' && babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
+    "clean": "echo '=> cleaning project' && rm -rf node_modules && rm -rf dist",
+    "build": "echo '=> building project' && npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
+    "debug": "echo '=> building debug project' && npm run lint && npm run html && npm run css && npm run js && npm run img",
+    "start": "echo '=> starting server' && node server/main.js 8080"
   },
   "repository": {
     "type": "git",
