@@ -20,7 +20,7 @@
     "css": "echo '=> converting less to css' && mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
     "js": "echo '=> making js files ready for browser' && mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
     "img": "echo '=> copying the assets' && mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "minify": "echo '=> minify all ressources' && babili dist/js/main.js > dist/js/main.min.js && lessc --clean-css dist/style/style.css dist/style/style.min.css",
+    "minify": "echo '=> minify all ressources' && babili dist/js/main.js > dist/js/main.min.js && rm dist/js/main.js && mv dist/js/main.min.js dist/js/main.js && lessc --clean-css dist/style/style.css dist/style/style.min.css && rm dist/style/style.css && mv dist/style/style.min.css dist/style/style.css",
     "clean": "echo '=> cleaning project' && rm -rf node_modules && rm -rf dist",
     "build": "echo '=> building project' && npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
     "debug": "echo '=> building debug project' && npm run lint && npm run html && npm run css && npm run js && npm run img",
