@@ -7,7 +7,7 @@ Installation
 ```
 git clone https://github.com/marchein/webdevHausarbeit.git
 cd webdevHausarbeit
-npm run installandstart
+npm install && npm run build && npm start
 ```
 Build only
 
@@ -19,7 +19,7 @@ API usage
 
 ```
 / - help page
-/tracks - get all tracks in json format
+/tracks/ - get all tracks in json format
 /track/:id - get the track with the id of :id
 
 ```
