@@ -1,4 +1,4 @@
-let map = require("leaflet"); // add library for the map
+let leaflet = require("leaflet"); // add library for the map
 let functions = require("./function.js"); // add other functions
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // add css for the map
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>"; // add css for fonts
@@ -11,6 +11,7 @@ let profileCanvas;
 let profileContainer;
 
 let maxItemsOnCurrentPage;
+let currentSelectedTrack = -1;
 
 let currentFirstItem = 0;
 let currentPage = 1;
@@ -34,14 +35,15 @@ let tracks = document.createElement("div"); // create control section
 tracks.id = "tracks";
 trackArea.appendChild(tracks);
 
-let mapView = map.map("mapArea"); // set map to trier and current zoom = 13
+let mapView = leaflet.map("mapArea"); // set map to trier and current zoom = 13
 
 function initMapView() {
+	currentSelectedTrack = -1;
 	clearMapLayer();
 	mapView.setView([49.749992, 6.637143299999934], 13);
 }
 
-map.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+leaflet.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
 	maxZoom: 18,
 	id: "mapbox.streets",
@@ -76,7 +78,7 @@ function clearMapLayer() {
 
 function addMarkers(coordinates) {
 	if (mapLayer !== undefined) {
-		let greenIcon = new map.Icon({
+		let greenIcon = new leaflet.Icon({
 			iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
 			shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
 			iconSize: [25, 41],
@@ -85,7 +87,7 @@ function addMarkers(coordinates) {
 			shadowSize: [41, 41]
 		});
 
-		let redIcon = new map.Icon({
+		let redIcon = new leaflet.Icon({
 			iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
 			shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
 			iconSize: [25, 41],
@@ -94,8 +96,8 @@ function addMarkers(coordinates) {
 			shadowSize: [41, 41]
 		});
 
-		map.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
-		map.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
+		leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
+		leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
 	}
 }
 function addCanvas() {
@@ -160,7 +162,7 @@ function highlightSelectedTrack(id) {
 		weight: 5
 	};
 
-	mapLayer = map.geoJSON(selectedTrack, {
+	mapLayer = leaflet.geoJSON(selectedTrack, {
 		style: style
 	});
 
@@ -181,6 +183,7 @@ function loadSelectedTrack(event) {
 
 	event.target.className += " active";
 	let id = event.target.id; // get id from <span id="THIS IS THIS ID">
+	currentSelectedTrack = id;
 	highlightSelectedTrack(id);
 	//functions.loadFile(serverPath + "api/tracks/" + id, highlightSelectedTrack); // load from the api
 }
@@ -195,21 +198,19 @@ function addTracksToList(name, id) {
 }
 
 function backPage() {
-	removeInactive();
 	if (currentPage > 1) {
+		removeInactive();
 		currentPage--;
+		setControls();
 	}
-
-	setControls();
 }
 
 function nextPage() {
-	removeInactive();
 	if (currentPage < totalPages) {
+		removeInactive();
 		currentPage++;
+		setControls();
 	}
-
-	setControls();
 }
 
 function removeInactive() {
@@ -244,10 +245,10 @@ function addControls() {
 
 function windowResize() {
 	currentPage = 1;
-	initMapView();
 	setControls();
 	removeInactive();
 	setCurrentPage();
+	initMapView();
 }
 
 function setControls() {
@@ -295,6 +296,11 @@ function setCurrentPage() {
 		if (allTracks[i] !== undefined) {
 			addTracksToList(getTrackName(allTracks[i]), i);
 		}
+	}
+
+	let currentSelectedTrackSpan = document.getElementById(currentSelectedTrack);
+	if (currentSelectedTrack !== -1 && 	currentSelectedTrackSpan !== null) {
+		currentSelectedTrackSpan.className += " active";
 	}
 }
 

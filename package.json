@@ -2,7 +2,7 @@
   "name": "webdevhausarbeit",
   "version": "1.0.0",
   "description": "Abgabe für das Modul \"Web-Entwicklung\" im SS2017",
-  "main": "src/js/main.js",
+  "main": "server/main.js",
   "dependencies": {
     "express": "latest",
     "leaflet": "latest"
