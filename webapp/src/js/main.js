@@ -3,12 +3,13 @@ let functions = require("./function.js"); // eigene funktionen einfügen
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />"; // leaflet css einbinden
 document.querySelector("head").innerHTML += "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>"; // font awesome einfügen für die pfeile
 
-let allTracks = []; // lokale speicherung der tracks
-					// so muss nicht bei jedem aufruf eines tracks
-					// die api neu angefragt werden, sondern kann einfach auf
-					// die position im array zugegriffen werden
-					// dh: .../api/tracks/22 gibt das gleiche ergebnis wie
-					// allTracks[22] -> /api/tracks/22 === allTracks[22] --> true
+let allTracks = [];
+// lokale speicherung der tracks
+// so muss nicht bei jedem aufruf eines tracks
+// die api neu angefragt werden, sondern kann einfach auf
+// die position im array zugegriffen werden
+// dh: .../api/tracks/22 gibt das gleiche ergebnis wie
+// allTracks[22] -> /api/tracks/22 === allTracks[22] --> true
 
 let serverPath = document.URL; // die aktuelle adresse des servers
 
@@ -195,8 +196,9 @@ function highlightSelectedTrack(id) {
 }
 
 function loadSelectedTrack(event) {
-	var elements = document.querySelectorAll(".trackButton.active");	// alle aktiven trackButtons suchen
-																		// sollten nie mehr als einer sein
+	var elements = document.querySelectorAll(".trackButton.active");
+	// alle aktiven trackButtons suchen
+	// sollten nie mehr als einer sein
 	for (let i = 0; i < elements.length; i++) {
 		elements[i].classList.remove("active"); // alle active classnames in den trackButtons entfernen
 	}
@@ -323,8 +325,8 @@ function setCurrentPage() {
 
 	let currentSelectedTrackSpan = document.getElementById(currentSelectedTrack);
 	if (currentSelectedTrack !== -1 && 	currentSelectedTrackSpan !== null) {
-		currentSelectedTrackSpan.className += " active"; // wenn aktueller track !== -1 und es ein element
-														// mit der id auf der aktuellen seite gibt, dieses als active markieren
+		currentSelectedTrackSpan.className += " active";
+		// wenn aktueller track !== -1 und es ein element mit der id auf der aktuellen seite gibt, dieses als active markieren
 	}
 }
 

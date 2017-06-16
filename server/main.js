@@ -1,15 +1,18 @@
+const commandLineArgs = require("command-line-args");
 var express = require("express");
-var app = express();
-let expressPort = process.argv[2];
+var server = express();
+const optionDefinitions = [{ name: "port", alias: "p", type: Number }];
+const options = commandLineArgs(optionDefinitions);
+let expressPort = options.port;
 const fs = require("fs");
 let bikeData = [];
 let path = "server/data/"; // set path where data files are stored
 
-app.use(express.static("dist"));
+server.use(express.static("dist"));
 
 // eslint-disable-next-line
 var router = express.Router(); // init the url for the api
-app.use("/api", router);
+server.use("/api", router);
 
 router.get("/", function (req, res) {
 	let version = "<h1>Bike API v0.0.1</h1>\nWritten by Marc Hein";
@@ -35,7 +38,7 @@ router.get("/tracks/:id", function (req, res) {
 });
 
 // Handle 404 error.
-app.use("*", function (req, res) {
+server.use("*", function (req, res) {
 	res.status(404).send("<h1>Error 404 - not found"); // not found error
 });
 
@@ -64,7 +67,7 @@ function initData() {
 	}
 }
 
-app.listen(expressPort, function () {
+server.listen(expressPort, function () {
 	initData();
-	console.log("Server running on: http://localhost:" + expressPort);
+	console.log("Server running on port: " + this.address().port);
 });

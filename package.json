@@ -4,15 +4,16 @@
   "description": "Abgabe für das Modul \"Web-Entwicklung\" im SS2017",
   "main": "server/main.js",
   "dependencies": {
+    "command-line-args": "latest",
     "express": "latest",
     "leaflet": "latest"
   },
   "devDependencies": {
+    "babili": "latest",
+    "browserify": "^14.4.0",
     "eslint": "latest",
     "less": "latest",
-    "less-plugin-clean-css": "latest",
-    "browserify ": "latest",
-    "babili": "latest"
+    "less-plugin-clean-css": "latest"
   },
   "scripts": {
     "lint": "echo '=> linting' && eslint -c ./.eslintrc.json webapp/src/js/**.js && eslint -c ./.eslintrc.json server/**.js",
@@ -25,7 +26,7 @@
     "clean": "echo '=> cleaning project' && rm -rf node_modules && rm -rf dist",
     "build": "echo '=> building project' && npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
     "debug": "echo '=> building debug project' && npm run lint && npm run html && npm run css && npm run js && npm run img",
-    "start": "echo '=> starting server' && node server/main.js 8080"
+    "start": "echo '=> starting server' && node server/main.js"
   },
   "repository": {
     "type": "git",
