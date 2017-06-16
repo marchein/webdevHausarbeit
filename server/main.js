@@ -12,8 +12,8 @@ var router = express.Router(); // init the url for the api
 app.use("/api", router);
 
 router.get("/", function (req, res) {
-	let version = "<h1>Bike API v0.0.1</h1>\nWritten by Konstantin Twardzik & Marc Hein";
-	let usage = "\n\n<h2>Usage:</h2>\n<ul>\n\t<li>/ - this help page</li>\n\t<li>/tracks - get all tracks in json format</li>\n\t<li>/tracks/:id - get the track with the id of :id</li>\n</ul>";
+	let version = "<h1>Bike API v0.0.1</h1>\nWritten by Marc Hein";
+	let usage = "\n\n<h2>Usage:</h2>\n<ul>\n\t<li>/ - this help page</li>\n\t<li>/tracks/ - get all tracks in json format</li>\n\t<li>/tracks/:id - get the track with the id of :id</li>\n</ul>";
 	res.send(version + usage);
 });
 
