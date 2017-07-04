@@ -3,6 +3,8 @@ var express = require("express");
 var server = express();
 const optionDefinitions = [{ name: "port", alias: "p", type: Number }];
 const options = commandLineArgs(optionDefinitions);
+// server mit npm run start -- --port 8080 und dem passenden Port starten
+console.log(options);
 let expressPort = options.port;
 const fs = require("fs");
 let bikeData = [];
