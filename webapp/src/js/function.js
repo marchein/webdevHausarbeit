@@ -6,7 +6,7 @@ function xhrError() {
 	console.error(this.statusText);
 }
 
-function loadFile(sURL, fCallback /*, argumentToPass1, argumentToPass2, etc. */) {
+function loadFile(sURL, fCallback) {
 	var oReq = new XMLHttpRequest();
 	oReq.callback = fCallback;
 	oReq.arguments = Array.prototype.slice.call(arguments, 2);
