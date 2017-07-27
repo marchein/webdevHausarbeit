@@ -290,7 +290,7 @@ function setControls() {
 	let tracksHeight = mapArea.clientHeight; // höhe der rechten trackbox === höhe der map
 	let controlsHeight = controls.clientHeight; // 50px
 	let trackBoxHeight = tracksHeight - controlsHeight; // trackbox höhe ohne controls
-	maxItemsOnCurrentPage = Math.floor(trackBoxHeight / 40); // wie viele tracks bei aktueller auflösung reinpassen
+	maxItemsOnCurrentPage = Math.floor(trackBoxHeight / 40); // wie viele tracks bei aktueller auflösung reinpassen... 40 da jeder einzelne Track 40px hoch ist
 
 	totalPages = Math.ceil(allTracks.length / maxItemsOnCurrentPage); // max pages
 
@@ -299,11 +299,7 @@ function setControls() {
 	setCurrentPage(); // aktuelle seite wird gesetzt
 }
 
-function setCurrentPage() {
-	while (tracks.firstChild) {
-		tracks.removeChild(tracks.firstChild);
-	} // alle elemente aus der trackliste löschen
-
+function setPageInactive() {
 	if (currentPage === 1) {
 		let left = document.getElementById("leftArrow");
 		left.className += " inactive";
@@ -315,6 +311,14 @@ function setCurrentPage() {
 		right.className += " inactive";
 		// wenn die seite === totalPages ist, den rechten button als inactive setzen
 	}
+}
+
+function setCurrentPage() {
+	setPageInactive();
+
+	while (tracks.firstChild) {
+		tracks.removeChild(tracks.firstChild);
+	} // alle elemente aus der trackliste löschen
 
 	let tracksHeight = mapArea.clientHeight; // höhe der rechten trackbox === höhe der map
 	let controlsHeight = controls.clientHeight; // 50px
