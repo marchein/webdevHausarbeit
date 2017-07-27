@@ -7,7 +7,8 @@ Installation
 ```
 git clone https://github.com/marchein/webdevHausarbeit.git
 cd webdevHausarbeit
-npm install && npm run build && npm start
+Bash for Win:        npm install && npm run build && npm start -- --port 8080
+GitBash: npm install && npm run buildGit && npm run startGit -- --port 8080
 ```
 Build only
 
