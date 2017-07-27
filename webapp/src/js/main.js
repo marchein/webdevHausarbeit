@@ -70,7 +70,7 @@ function init() {
 	initMapView(); // mapview aufbauen
 }
 
-functions.loadFile(serverPath + "api/tracks/", init); // api aufrufen und mit antwort init() aufrufen
+functions.loadFile(serverPath + "api/tracks/", init); // api aufrufen und mit Antwort die Funktion init() aufrufen
 
 function clearMapLayer() {
 	if (mapLayer !== undefined) { // wenn mapLayer vorhanden ist...
@@ -104,19 +104,17 @@ function addMarkers(coordinates) {
 		 * grünen marker am letzten koordinatenpunkt setzen
 		 */
 
-		leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
-		leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
+		let start = leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
+		let end = leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
+
+		var popup = leaflet.popup().setContent("I am a standalone popup.");
+
+		start.bindPopup(popup).openPopup();
+		end.bindPopup(popup).openPopup();
 	}
 }
 function addCanvas() {
-	// falls canvas bereits vorhanden, canvas löschen
-	if (profileCanvas !== undefined) {
-		profileContainer.removeChild(profileCanvas);
-	}
-	// falls canvascontainer bereits vorhanden, container löschen
-	if (profileContainer !== undefined) {
-		mapArea.removeChild(profileContainer);
-	}
+	removeCanvas();
 
 	// container erzeugen
 	profileContainer = document.createElement("div");
@@ -267,11 +265,24 @@ function addControls() {
 	setControls();
 }
 
+function removeCanvas() {
+	// falls canvas bereits vorhanden, canvas löschen
+	if (profileCanvas !== undefined) {
+		profileContainer.removeChild(profileCanvas);
+		profileCanvas = undefined;
+	}
+	// falls canvascontainer bereits vorhanden, container löschen
+	if (profileContainer !== undefined) {
+		mapArea.removeChild(profileContainer);
+		profileContainer = undefined;
+	}
+}
+
 function windowResize() { // wird bei der veränderung der größe des fensters ausgerufen
+	removeInactive(); // inaktive buttons werden entfernt
+	removeCanvas();
 	currentPage = 1; // aktuelle seite wird auf 1 gesetzt
 	setControls();
-	removeInactive(); // inaktive buttons werden entfernt
-	setCurrentPage(); // aktuelle seite wird gesetzt
 	initMapView(); // mapView neu initialisieren
 }
 
@@ -285,7 +296,7 @@ function setControls() {
 
 	let pages = document.getElementById("pages");
 	pages.innerHTML = currentPage + "/" + totalPages;
-	setCurrentPage();
+	setCurrentPage(); // aktuelle seite wird gesetzt
 }
 
 function setCurrentPage() {

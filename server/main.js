@@ -4,7 +4,6 @@ var server = express();
 const optionDefinitions = [{ name: "port", alias: "p", type: Number }];
 const options = commandLineArgs(optionDefinitions);
 // server mit npm run start -- --port 8080 und dem passenden Port starten
-console.log(options);
 let expressPort = options.port;
 const fs = require("fs");
 let bikeData = [];
@@ -41,7 +40,7 @@ router.get("/tracks/:id", function (req, res) {
 
 // Handle 404 error.
 server.use("*", function (req, res) {
-	res.status(404).send("<h1>Error 404 - not found"); // not found error
+	res.status(404).send("<h1>Error 404 - not found</h1>"); // not found error
 });
 
 function fileExists(fileName) {
