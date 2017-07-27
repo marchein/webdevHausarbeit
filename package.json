@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "babili": "latest",
-    "browserify": "^14.4.0",
+    "browserify": "latest",
     "eslint": "latest",
     "less": "latest",
     "less-plugin-clean-css": "latest"
