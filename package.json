@@ -26,20 +26,7 @@
     "clean": "echo '=> cleaning project' && rm -rf node_modules && rm -rf dist",
     "build": "echo '=> building project' && npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
     "debug": "echo '=> building debug project' && npm run lint && npm run html && npm run css && npm run js && npm run img",
-    "start": "echo '=> starting server' && node server/main.js",
-    "mkdirGit": "mkdir dist && cd ./dist && mkdir style && mkdir js && mkdir assets",
-    "lintGit": "eslint -c ./.eslintrc.json webapp/src/js/**.js && eslint -c ./.eslintrc.json server/**.js",
-    "htmlGit": "cp ./webapp/src/index.html ./dist/",
-    "cssGit": "lessc ./webapp/src/style/style.less ./dist/style/style.css",
-    "css_minifyGit": "lessc --clean-css ./webapp/src/style/style.less ./dist/style/style.css",
-    "jsGit": "browserify ./webapp/src/js/main.js > ./dist/js/main.js",
-    "imgGit": "cp ./webapp/src/assets/* ./dist/assets/",
-    "minifyGit": "babili ./dist/js/main.js > ./dist/js/main.min.js && rm ./dist/js/main.js && mv ./dist/js/main.min.js ./dist/js/main.js && npm run css_minifyGit",
-    "cleanGit": "rm -rf ./node_modules && rm -rf ./dist",
-    "clean_distGit": "rm -rf ./dist",
-    "buildGit": "npm run mkdirGit && npm run lintGit && npm run htmlGit && npm run cssGit && npm run jsGit && npm run imgGit && npm run minifyGit",
-    "debugGit": "npm run lintGit && npm run htmlGit && npm run cssGit && npm run jsGit && npm run imgGit",
-    "startGit": "node ./server/main.js"
+    "start": "echo '=> starting server' && node server/main.js"
   },
   "repository": {
     "type": "git",

@@ -70,7 +70,7 @@ function init() {
 	initMapView(); // mapview aufbauen
 }
 
-functions.loadFile(serverPath + "api/tracks/", init); // api aufrufen und mit Antwort die Funktion init() aufrufen
+functions.loadFile(serverPath + "api/tracks/", init); // api aufrufen und mit antwort init() aufrufen
 
 function clearMapLayer() {
 	if (mapLayer !== undefined) { // wenn mapLayer vorhanden ist...
@@ -104,17 +104,19 @@ function addMarkers(coordinates) {
 		 * grünen marker am letzten koordinatenpunkt setzen
 		 */
 
-		let start = leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
-		let end = leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
-
-		var popup = leaflet.popup().setContent("I am a standalone popup.");
-
-		start.bindPopup(popup).openPopup();
-		end.bindPopup(popup).openPopup();
+		leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
+		leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
 	}
 }
 function addCanvas() {
-	removeCanvas();
+	// falls canvas bereits vorhanden, canvas löschen
+	if (profileCanvas !== undefined) {
+		profileContainer.removeChild(profileCanvas);
+	}
+	// falls canvascontainer bereits vorhanden, container löschen
+	if (profileContainer !== undefined) {
+		mapArea.removeChild(profileContainer);
+	}
 
 	// container erzeugen
 	profileContainer = document.createElement("div");
