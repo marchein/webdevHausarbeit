@@ -107,10 +107,14 @@ function addMarkers(coordinates) {
 		let start = leaflet.marker([coordinates[0][1], coordinates[0][0]], { icon: redIcon }).addTo(mapLayer);
 		let end = leaflet.marker([coordinates[coordinates.length - 1][1], coordinates[coordinates.length - 1][0]], { icon: greenIcon }).addTo(mapLayer);
 
-		var popup = leaflet.popup().setContent("I am a standalone popup.");
+		/*var popup = leaflet.popup().setContent("I am a standalone popup.");
 
 		start.bindPopup(popup).openPopup();
-		end.bindPopup(popup).openPopup();
+		end.bindPopup(popup).openPopup();*/
+
+		// sollten eigentlich "Start" und "Ende" anzeigen...
+		// bekam es leider nur hin, dass sie beim anklicken erscheinen
+		// und dann vergessen es bei der abgabe raus zu nehmen
 	}
 }
 function addCanvas() {
