@@ -7,8 +7,7 @@ Installation
 ```
 git clone https://github.com/marchein/webdevHausarbeit.git
 cd webdevHausarbeit
-Bash for Win:        npm install && npm run build && npm start -- --port 8080
-GitBash: npm install && npm run buildGit && npm run startGit -- --port 8080
+npm install && npm run build && npm start
 ```
 Build only
 
@@ -21,7 +20,7 @@ API usage
 ```
 / - help page
 /tracks/ - get all tracks in json format
-/track/:id - get the track with the id of :id
+/tracks/:id - get the track with the id of :id
 
 ```
 

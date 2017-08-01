@@ -1,10 +1,7 @@
-const commandLineArgs = require("command-line-args");
 var express = require("express");
 var server = express();
-const optionDefinitions = [{ name: "port", alias: "p", type: Number }];
-const options = commandLineArgs(optionDefinitions);
-// server mit npm run start -- --port 8080 und dem passenden Port starten
-let expressPort = options.port;
+const args = process.argv;
+let expressPort = args[2];
 const fs = require("fs");
 let bikeData = [];
 let path = "server/data/"; // set path where data files are stored
