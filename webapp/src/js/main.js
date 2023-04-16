@@ -51,11 +51,9 @@ function initMapView() {
 	mapView.setView([49.749992, 6.637143299999934], 13); // mapView auf Trier mit Zoom Stufe 13 setzen
 }
 
-leaflet.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-	maxZoom: 18,
-	id: "mapbox.streets",
-	accessToken: "pk.eyJ1IjoibWFyY2hlaW4iLCJhIjoiY2ozNHF6bm9tMDAyajJ3cDdjYWQ5N3QydCJ9.I5KDSfeFcn6e2oUJi6k2fg"
+leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	maxZoom: 18
 }).addTo(mapView); // mapbox api zu leaflet map hinzufügen
 
 function init() {
