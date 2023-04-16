@@ -4,15 +4,17 @@
   "description": "Abgabe für das Modul \"Web-Entwicklung\" im SS2017",
   "main": "server/main.js",
   "dependencies": {
-    "command-line-args": "latest",
-    "express": "latest",
-    "leaflet": "latest"
+    "command-line-args": "5.2.1",
+    "express": "4.18.2",
+    "leaflet": "1.9.3"
   },
   "devDependencies": {
-    "babel-cli": "latest",
-    "browserify": "latest",
-    "eslint": "latest",
-    "less": "latest"
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "browserify": "17.0.0",
+    "eslint": "8.38.0",
+    "less": "4.1.3",
+    "uglify-js": "^3.17.4"
   },
   "scripts": {
     "lint": "echo '=> linting' && eslint -c ./.eslintrc.json webapp/src/js/**.js && eslint -c ./.eslintrc.json server/**.js",
@@ -20,7 +22,7 @@
     "css": "echo '=> converting less to css' && mkdir -p dist/style && lessc webapp/src/style/style.less dist/style/style.css",
     "js": "echo '=> making js files ready for browser' && mkdir -p dist/js && browserify webapp/src/js/main.js > dist/js/main.js",
     "img": "echo '=> copying the assets' && mkdir -p dist/assets && cp webapp/src/assets/* dist/assets/",
-    "minify": "echo '=> minify all ressources' && babel dist/js/main.js > dist/js/main.min.js && rm dist/js/main.js && mv dist/js/main.min.js dist/js/main.js && mkdir -p dist/style && npm run css",
+    "minify": "echo '=> minify all ressources' && babel dist/js/main.js --out-file dist/js/main.temp.js && rm dist/js/main.js && uglifyjs dist/js/main.temp.js --compress --mangle > dist/js/main.min.js && mv dist/js/main.min.js dist/js/main.js && rm dist/js/main.temp.js && mkdir -p dist/style && npm run css",
     "clean": "echo '=> cleaning project' && rm -rf node_modules && rm -rf dist",
     "build": "echo '=> building project' && npm run lint && npm run html && npm run css && npm run js && npm run img && npm run minify",
     "debug": "echo '=> building debug project' && npm run lint && npm run html && npm run css && npm run js && npm run img",
